@@ -1,0 +1,355 @@
+@import "tailwindcss";
+
+/* ============================
+   BharatVote Design System
+   Premium Indian Election Literacy Navigator
+   ============================ */
+
+@theme {
+  /* --- Color Palette (Indian Tricolor + Premium Accents) --- */
+  --color-saffron: #D35400;
+  --color-saffron-light: #E67E22;
+  --color-saffron-dark: #A04000;
+  --color-navy: #1B2A4A;
+  --color-navy-light: #2C3E6B;
+  --color-navy-dark: #0F1B33;
+  --color-cream: #FDF6EC;
+  --color-cream-dark: #F5E6D0;
+  --color-green-india: #138808;
+  --color-green-light: #1FA812;
+  --color-white-pure: #FFFFFF;
+  --color-text-primary: #1A1A2E;
+  --color-text-secondary: #4A4A68;
+  --color-text-muted: #8888A0;
+  --color-border: #E8E0D4;
+  --color-border-light: #F0EAE0;
+  --color-danger: #C0392B;
+  --color-warning: #E67E22;
+  --color-success: #27AE60;
+  --color-info: #2980B9;
+  --color-card: #FFFFFF;
+  --color-card-hover: #FFF9F0;
+
+  /* --- Typography --- */
+  --font-sans: 'Outfit', 'Noto Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Outfit', 'Noto Sans', system-ui, sans-serif;
+
+  /* --- Spacing Scale --- */
+  --spacing-section: 5rem;
+
+  /* --- Border Radius --- */
+  --radius-card: 1rem;
+  --radius-button: 0.75rem;
+  --radius-pill: 9999px;
+  --radius-input: 0.625rem;
+
+  /* --- Shadows --- */
+  --shadow-card: 0 2px 16px rgba(27, 42, 74, 0.06);
+  --shadow-card-hover: 0 8px 32px rgba(27, 42, 74, 0.12);
+  --shadow-nav: 0 1px 8px rgba(27, 42, 74, 0.08);
+  --shadow-button: 0 2px 8px rgba(211, 84, 0, 0.2);
+
+  /* --- Transitions --- */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* --- Breakpoints --- */
+  --breakpoint-xs: 480px;
+}
+
+/* ============================
+   Base Styles
+   ============================ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-cream);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--color-saffron);
+  color: white;
+}
+
+/* Focus Accessibility */
+:focus-visible {
+  outline: 3px solid var(--color-saffron);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Skip to main content link */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 9999;
+  padding: 12px 24px;
+  background: var(--color-navy);
+  color: white;
+  border-radius: var(--radius-button);
+  font-weight: 600;
+  transition: top var(--transition-fast);
+}
+.skip-link:focus {
+  top: 16px;
+}
+
+/* ============================
+   Utility Animations
+   ============================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes typing {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.5s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animation-delay-100 { animation-delay: 0.1s; }
+.animation-delay-200 { animation-delay: 0.2s; }
+.animation-delay-300 { animation-delay: 0.3s; }
+.animation-delay-400 { animation-delay: 0.4s; }
+.animation-delay-500 { animation-delay: 0.5s; }
+
+/* ============================
+   Component Base Styles
+   ============================ */
+
+/* Cards */
+.card {
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border-light);
+  transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+}
+.card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+/* Glass Card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+/* Buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-saffron);
+  color: white;
+  font-weight: 600;
+  border-radius: var(--radius-button);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-button);
+  font-size: 0.95rem;
+}
+.btn-primary:hover {
+  background: var(--color-saffron-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(211, 84, 0, 0.3);
+}
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  color: var(--color-navy);
+  font-weight: 600;
+  border-radius: var(--radius-button);
+  border: 2px solid var(--color-navy);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 0.95rem;
+}
+.btn-secondary:hover {
+  background: var(--color-navy);
+  color: white;
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+.badge-saffron {
+  background: rgba(211, 84, 0, 0.12);
+  color: var(--color-saffron);
+}
+.badge-green {
+  background: rgba(39, 174, 96, 0.12);
+  color: var(--color-success);
+}
+.badge-navy {
+  background: rgba(27, 42, 74, 0.12);
+  color: var(--color-navy);
+}
+.badge-danger {
+  background: rgba(192, 57, 43, 0.12);
+  color: var(--color-danger);
+}
+.badge-warning {
+  background: rgba(230, 126, 34, 0.12);
+  color: var(--color-warning);
+}
+
+/* Progress Bar */
+.progress-bar {
+  height: 6px;
+  background: var(--color-border);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-saffron), var(--color-saffron-light));
+  border-radius: var(--radius-pill);
+  transition: width 0.8s ease-out;
+}
+
+/* Status Dot */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.status-dot-live {
+  background: #27AE60;
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+/* Section Header */
+.section-header {
+  margin-bottom: 2rem;
+}
+.section-header h2 {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-navy);
+}
+.section-header p {
+  color: var(--color-text-secondary);
+  margin-top: 0.5rem;
+  max-width: 600px;
+}
+
+/* Input field */
+.input-field {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-input);
+  background: white;
+  font-size: 0.95rem;
+  color: var(--color-text-primary);
+  transition: border-color var(--transition-fast);
+}
+.input-field:focus {
+  border-color: var(--color-saffron);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(211, 84, 0, 0.1);
+}
+.input-field::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
