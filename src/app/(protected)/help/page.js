@@ -4,11 +4,36 @@ import { useState } from "react";
 import Link from "next/link";
 
 const TOPICS = [
-  { title: "Registration", desc: "Voter ID, Form 6, and eligibility requirements.", icon: "📝", link: "/journey" },
-  { title: "Polling Booth", desc: "Find your station and understand the queue process.", icon: "📍", link: "/journey" },
-  { title: "ID Documents", desc: "Valid identity proofs for voting day.", icon: "🆔", link: "/journey" },
-  { title: "Technical Help", desc: "App troubleshooting and account security.", icon: "🔧", link: "#" },
+  { id: "registration", title: "Registration", desc: "Voter ID, Form 6, and eligibility requirements.", icon: "📝" },
+  { id: "booth", title: "Polling Booth", desc: "Find your station and understand the queue process.", icon: "📍" },
+  { id: "docs", title: "ID Documents", desc: "Valid identity proofs for voting day.", icon: "🆔" },
+  { id: "tech", title: "Technical Help", desc: "App troubleshooting and account security.", icon: "🔧" },
 ];
+
+const TOPIC_CONTENT = {
+  registration: [
+    { title: "📋 Form 6 — New Registration", items: ["Visit the Journey page and complete Stage 1 (Registration).", "You need your full name, DOB, and residential address.", "Minimum age for voter registration is 18 years."] },
+    { title: "✏️ Form 8 — Corrections", items: ["Already registered? Use Form 8 to correct name, address, or photo.", "Navigate to Profile → Update Details to submit corrections.", "Processing takes 7-14 working days after BLO verification."] },
+    { title: "🗑️ Form 7 — Deletion/Objection", items: ["Use Form 7 to raise objections against incorrect entries.", "Deceased or shifted voters can be flagged for removal.", "Contact your local ERO for expedited processing."] },
+    { title: "✅ Eligibility", items: ["Must be an Indian citizen aged 18+ on qualifying date (Jan 1).", "Must be a resident of the constituency you're registering in.", "NRIs can register under Section 20A of the RP Act, 1950."] },
+  ],
+  booth: [
+    { title: "📍 Find Your Booth", items: ["Use Stage 4 (Booth Finder) in the Journey page.", "Enter your locality/ward to see the nearest polling station.", "Each booth serves approximately 1,000-1,500 voters."] },
+    { title: "⏰ Polling Day Process", items: ["Polling hours: 7:00 AM to 6:00 PM (may vary by state).", "Carry your EPIC Voter ID or any approved photo ID.", "Queue up, get your finger inked, then proceed to the EVM."] },
+    { title: "♿ Accessibility", items: ["All booths have ramp access for wheelchair users.", "Braille-enabled EVMs are available for visually impaired voters.", "Senior citizens (80+) can opt for postal ballot facility."] },
+  ],
+  docs: [
+    { title: "🆔 Accepted IDs for Voting", items: ["EPIC (Voter ID Card) — Primary document.", "Aadhaar Card, Passport, Driving License.", "PAN Card, Bank Passbook with photo, Government ID."] },
+    { title: "📸 Photo Requirements", items: ["Recent passport-size photo (white background preferred).", "Face must be clearly visible, no sunglasses or hats.", "For document upload: PDF, JPG, PNG formats (max 5MB)."] },
+    { title: "🔄 Lost or Damaged ID", items: ["Apply for a duplicate EPIC via Form 002 online.", "Visit your nearest Voter Facilitation Centre for assistance.", "Digital Voter ID (e-EPIC) can be downloaded from voters.eci.gov.in."] },
+  ],
+  tech: [
+    { title: "🔑 Account & Login", items: ["Use Forgot Password on the login page to reset via email.", "Ensure your email is verified before accessing protected features.", "Clear browser cache if you face repeated login issues."] },
+    { title: "📱 App Performance", items: ["BharatVote works best on Chrome, Edge, and Safari.", "Enable JavaScript and disable ad-blockers for full functionality.", "Use a stable internet connection for real-time features."] },
+    { title: "📄 Document Upload", items: ["Accepted formats: PDF, JPG, PNG (max 5MB).", "Ensure documents are clear and not blurry.", "If upload fails, try compressing the file first."] },
+    { title: "🛡️ Security & Privacy", items: ["Your data is encrypted via Firebase with AES-256.", "We never share personal data with third parties.", "Report suspicious activity via the Email Support below."] },
+  ],
+};
 
 const FAQS = [
   { q: "How do I update my address on my Voter ID?", a: "You can update your address by filling out Form 8A online through the BharatVote platform. Navigate to 'My Profile', select 'Update Details', and upload a valid proof of your new address (e.g., Aadhaar card, utility bill). Processing usually takes 7-14 working days." },
@@ -19,6 +44,7 @@ const FAQS = [
 export default function HelpPage() {
   const [openFaq, setOpenFaq] = useState(null);
   const [search, setSearch] = useState("");
+  const [activeTopic, setActiveTopic] = useState(null);
 
   return (
     <div className="bg-cream min-h-screen">
@@ -36,37 +62,58 @@ export default function HelpPage() {
              How can we <span className="text-saffron">help you</span> today?
            </h1>
            
-           <div className="relative group max-w-2xl mx-auto mt-12 pb-10">
-              <div className="absolute inset-0 bg-white/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
-              <input 
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search for 'Voter ID', 'Form 8', 'Booth Finder'..."
-                className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-full py-5 px-10 text-lg font-medium placeholder:text-white/40 focus:bg-white focus:text-navy focus:ring-4 focus:ring-saffron/30 transition-all outline-none relative z-10"
-              />
-              <span className="absolute right-6 top-1/2 -translate-y-1/2 text-2xl opacity-40 group-focus-within:text-navy group-focus-within:opacity-100 transition-all z-10">🔍</span>
-           </div>
+           <div className="relative group max-w-2xl mx-auto mt-12 mb-10">
+               <div className="absolute inset-0 bg-white/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+               <input 
+                 type="text"
+                 value={search}
+                 onChange={(e) => setSearch(e.target.value)}
+                 placeholder="Search for 'Voter ID', 'Form 8', 'Booth Finder'..."
+                 className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-full py-5 px-10 pr-16 text-lg font-medium placeholder:text-white/40 focus:bg-white focus:text-navy focus:ring-4 focus:ring-saffron/30 transition-all outline-none relative z-10"
+               />
+               <span className="absolute right-6 top-1/2 -translate-y-1/2 text-2xl opacity-40 group-focus-within:text-navy group-focus-within:opacity-100 transition-all z-20">🔍</span>
+            </div>
         </div>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-32 pb-20 relative z-20">
         
         {/* Topic Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
            {TOPICS.map(t => (
-             <Link key={t.title} href={t.link} className="card p-8 border-0 shadow-xl bg-white hover:-translate-y-2 hover:shadow-2xl transition-all duration-500 group">
-                <div className="w-16 h-16 rounded-2xl bg-cream flex items-center justify-center text-3xl mb-6 shadow-inner group-hover:bg-saffron transition-colors duration-500">
+             <button key={t.id} onClick={() => setActiveTopic(activeTopic === t.id ? null : t.id)} className={`card p-8 border-0 shadow-xl bg-white hover:-translate-y-2 hover:shadow-2xl transition-all duration-500 group text-left ${activeTopic === t.id ? 'ring-2 ring-saffron' : ''}`}>
+                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-inner transition-colors duration-500 ${activeTopic === t.id ? 'bg-saffron' : 'bg-cream group-hover:bg-saffron'}`}>
                    {t.icon}
                 </div>
                 <h3 className="text-lg font-black text-navy mb-2 group-hover:text-saffron transition-colors">{t.title}</h3>
                 <p className="text-sm text-text-secondary leading-relaxed opacity-70 mb-4">{t.desc}</p>
                 <span className="text-[10px] font-black text-saffron uppercase tracking-widest flex items-center gap-2 group-hover:gap-4 transition-all">
-                   Explore Guide <span>→</span>
+                   {activeTopic === t.id ? 'Close' : 'Open Guide'} <span>{activeTopic === t.id ? '✕' : '→'}</span>
                 </span>
-             </Link>
+             </button>
            ))}
         </div>
+
+        {/* Expanded Topic Content */}
+        {activeTopic && TOPIC_CONTENT[activeTopic] && (
+          <div className="card p-8 border-0 shadow-xl bg-white mb-16 animate-fade-in">
+            <h3 className="text-xl font-black text-navy mb-6 flex items-center gap-3">
+              {TOPICS.find(t => t.id === activeTopic)?.icon} {TOPICS.find(t => t.id === activeTopic)?.title} Guide
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {TOPIC_CONTENT[activeTopic].map((section, i) => (
+                <div key={i} className="bg-cream rounded-xl p-5 border border-navy/5">
+                  <h4 className="font-bold text-navy mb-2 text-sm">{section.title}</h4>
+                  <ul className="space-y-2 text-xs text-text-secondary">
+                    {section.items.map((item, j) => (
+                      <li key={j}>• {item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
            {/* FAQ Section */}
@@ -125,28 +172,32 @@ export default function HelpPage() {
                  </div>
               </div>
 
-              {/* Contact Support */}
-              <div className="card p-8 border-0 shadow-xl bg-white">
-                 <h3 className="text-sm font-black text-navy uppercase tracking-widest mb-6">Still Stuck?</h3>
-                 <div className="space-y-4">
-                    <button className="w-full flex items-center gap-4 p-4 rounded-2xl bg-cream hover:bg-navy hover:text-white transition-all group">
-                       <span className="text-2xl group-hover:scale-110 transition-transform">📧</span>
-                       <div className="text-left">
-                          <p className="text-sm font-bold">Email Support</p>
-                          <p className="text-[10px] opacity-60">Avg. response time: 2 hours</p>
-                       </div>
-                    </button>
-                    <button className="w-full flex items-center gap-4 p-4 rounded-2xl bg-cream hover:bg-navy hover:text-white transition-all group">
-                       <span className="text-2xl group-hover:scale-110 transition-transform">📱</span>
-                       <div className="text-left">
-                          <p className="text-sm font-bold">Call Helpline</p>
-                          <p className="text-[10px] opacity-60">Mon-Fri, 9am - 6pm IST</p>
-                       </div>
-                    </button>
-                 </div>
+            </div>
+         </div>
+
+         {/* Still Stuck - Centered Full Width */}
+         <div className="max-w-2xl mx-auto mt-16">
+           <div className="card p-8 border-0 shadow-xl bg-white text-center">
+              <h3 className="text-lg font-black text-navy mb-2">Still Stuck?</h3>
+              <p className="text-xs text-text-secondary mb-6">Reach out to our support team for further assistance.</p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                 <button className="flex items-center justify-center gap-3 px-6 py-4 rounded-2xl bg-cream hover:bg-navy hover:text-white transition-all group">
+                    <span className="text-xl group-hover:scale-110 transition-transform">📧</span>
+                    <div className="text-left">
+                       <p className="text-sm font-bold">Email Support</p>
+                       <p className="text-[10px] opacity-60">Avg. response: 2 hours</p>
+                    </div>
+                 </button>
+                 <button className="flex items-center justify-center gap-3 px-6 py-4 rounded-2xl bg-cream hover:bg-navy hover:text-white transition-all group">
+                    <span className="text-xl group-hover:scale-110 transition-transform">📱</span>
+                    <div className="text-left">
+                       <p className="text-sm font-bold">Call Helpline</p>
+                       <p className="text-[10px] opacity-60">Mon-Fri, 9am - 6pm</p>
+                    </div>
+                 </button>
               </div>
            </div>
-        </div>
+         </div>
       </div>
     </div>
   );
