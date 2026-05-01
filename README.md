@@ -1,7 +1,10 @@
 <div align="center">
-  <img src="public/images/logo.png" alt="BharatVote Logo" width="180" height="auto" />
-  <h1>🗳️ BharatVote: Interactive Election Literacy Navigator</h1>
-  <p><b>Empowering the Indian Voter, One Click at a Time.</b></p>
+  <br />
+  <div style="display: flex; align-items: center; justify-content: center; gap: 12px;">
+    <img src="public/images/logo.png" alt="BharatVote Logo" width="60" height="60" />
+    <h1 style="border-bottom: none; margin: 0; font-size: 48px;">Bharat<span style="color: #FF9933;">Vote</span></h1>
+  </div>
+  <p><b>Your Vote. Your Power. The National Election Literacy Navigator.</b></p>
 
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   [![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
