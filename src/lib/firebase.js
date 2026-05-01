@@ -15,7 +15,7 @@ import { getFirestore, initializeFirestore, persistentLocalCache, persistentMult
 import { getAnalytics, isSupported } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAQ45WVqqeIxAtKHMfucaQjaMkSPSlzrqE",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: "bharatvote-a8c3a.firebaseapp.com",
   projectId: "bharatvote-a8c3a",
   storageBucket: "bharatvote-a8c3a.firebasestorage.app",
