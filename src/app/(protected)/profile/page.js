@@ -44,31 +44,9 @@ export default function ProfilePage() {
     loadProfile();
   }, [user]);
 
-  const detectLocation = () => {
-     if (!navigator.geolocation) return alert("Geolocation not supported");
-     navigator.geolocation.getCurrentPosition((pos) => {
-        const { latitude: lat, longitude: lng } = pos.coords;
-        let state = "Delhi";
-        let constituency = "New Delhi";
-
-        // Simple coordinate-based state lookup for demo accuracy
-        if (lat > 17 && lat < 23 && lng > 81 && lng < 88) {
-           state = "Odisha";
-           constituency = "Bhubaneswar";
-        } else if (lat > 10 && lat < 15 && lng > 74 && lng < 79) {
-           state = "Karnataka";
-           constituency = "Bangalore South";
-        } else if (lat > 18 && lat < 20 && lng > 72 && lng < 74) {
-           state = "Maharashtra";
-           constituency = "Mumbai South";
-        }
-
-        alert(`Location Verified: ${state} (${constituency}) detected via GPS.`);
-        setProfileData(prev => ({ ...prev, constituency, state }));
-     }, (err) => {
-        alert("Permission denied. Using Odisha as manual fallback.");
-        setProfileData(prev => ({ ...prev, constituency: "Bhubaneswar", state: "Odisha" }));
-     });
+  const updateLocationManually = (state, constituency) => {
+     setProfileData(prev => ({ ...prev, constituency, state }));
+     alert(`Location updated to ${constituency}, ${state}`);
   };
 
   const handlePhotoChange = (e) => {
@@ -199,12 +177,12 @@ export default function ProfilePage() {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="4"><path d="M20 6 9 17l-5-5"/></svg>
               </span>
             </div>
-            <div className="text-center sm:text-left flex-1">
+              <div className="text-center sm:text-left flex-1">
               <h1 className="text-4xl sm:text-5xl font-black tracking-tighter mb-2">{displayName}</h1>
               <div className="flex flex-wrap justify-center sm:justify-start gap-4 mt-4">
-                 <button onClick={detectLocation} className="px-4 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 text-xs font-black uppercase tracking-widest text-saffron hover:bg-saffron hover:text-white transition-all flex items-center gap-2">
-                   📍 {location} <span className="opacity-60 text-[10px]">Detect</span>
-                 </button>
+                 <span className="px-4 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 text-xs font-black uppercase tracking-widest text-saffron">
+                   📍 {location}
+                 </span>
                  <span className="px-4 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 text-xs font-black uppercase tracking-widest text-blue-300">
                    ⭐ Civic Score: 850
                  </span>
@@ -231,11 +209,27 @@ export default function ProfilePage() {
                         <input className="input-field" defaultValue={displayName} onChange={(e) => setProfileData({...profileData, fullName: e.target.value})} />
                      </div>
                      <div>
-                        <label className="block text-[10px] font-black text-text-muted uppercase mb-2">Location (State/District)</label>
-                        <div className="flex gap-2">
-                           <input className="input-field" value={location} disabled />
-                           <button onClick={detectLocation} className="px-4 bg-cream text-navy rounded-xl font-black text-[10px]">AUTO</button>
-                        </div>
+                        <label className="block text-[10px] font-black text-text-muted uppercase mb-2">State</label>
+                        <select 
+                          className="input-field" 
+                          value={profileData?.state || ""} 
+                          onChange={(e) => setProfileData({...profileData, state: e.target.value})}
+                        >
+                           <option value="">Select State</option>
+                           <option value="Odisha">Odisha</option>
+                           <option value="Delhi">Delhi</option>
+                           <option value="Maharashtra">Maharashtra</option>
+                           <option value="Karnataka">Karnataka</option>
+                        </select>
+                     </div>
+                     <div>
+                        <label className="block text-[10px] font-black text-text-muted uppercase mb-2">Constituency</label>
+                        <input 
+                          className="input-field" 
+                          placeholder="Enter Constituency" 
+                          defaultValue={profileData?.constituency} 
+                          onChange={(e) => setProfileData({...profileData, constituency: e.target.value})} 
+                        />
                      </div>
                      <div className="sm:col-span-2">
                         <label className="block text-[10px] font-black text-text-muted uppercase mb-2">Civic Bio</label>
