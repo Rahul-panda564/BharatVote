@@ -68,7 +68,7 @@ export default function RepresentationPage() {
             <div className="card p-6 sm:p-8">
               <div className="flex flex-col sm:flex-row sm:items-center gap-5 mb-6">
                 <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-green-india/30 shrink-0">
-                  <img src="/images/mp-ramesh.png" alt={MP_DATA.name} className="w-full h-full object-cover" />
+                  <img src="/mp-ramesh.png" alt={MP_DATA.name} className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">

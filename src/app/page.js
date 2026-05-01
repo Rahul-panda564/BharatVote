@@ -179,7 +179,7 @@ export default function HomePage() {
                 <div className="absolute -inset-10 bg-saffron/20 blur-[80px] rounded-full animate-pulse" />
                 <div className="card bg-white/10 backdrop-blur-2xl border-white/20 p-6 rounded-[3rem] shadow-2xl relative z-10 overflow-hidden group">
                   <img 
-                    src="/images/ai-bot.png" 
+                    src="/ai-bot.png" 
                     alt="Chunav Mitra AI Avatar" 
                     className="w-full h-auto rounded-[2rem] transition-transform duration-700 group-hover:scale-105" 
                   />

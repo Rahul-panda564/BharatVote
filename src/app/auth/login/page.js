@@ -44,7 +44,7 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-3 group justify-center mb-6">
             <div className="w-10 h-10 bg-white rounded-xl shadow-lg flex items-center justify-center p-1 group-hover:scale-110 transition-transform border border-border-light">
-              <img src="/images/logo.png" alt="BharatVote Logo" className="w-full h-full object-contain" />
+              <img src="/logo.png" alt="BharatVote Logo" className="w-full h-full object-contain" />
             </div>
             <span className="font-black text-2xl tracking-tighter text-navy group-hover:text-saffron transition-colors">
               Bharat<span className="text-saffron">Vote</span>
