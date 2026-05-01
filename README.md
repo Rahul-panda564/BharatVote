@@ -1,4 +1,14 @@
-# 🗳️ BharatVote: Interactive Election Literacy Navigator
+<div align="center">
+  <img src="public/images/logo.png" alt="BharatVote Logo" width="180" height="auto" />
+  <h1>🗳️ BharatVote: Interactive Election Literacy Navigator</h1>
+  <p><b>Empowering the Indian Voter, One Click at a Time.</b></p>
+
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  [![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-blue)](https://tailwindcss.com/)
+</div>
+
+<br />
 
 **BharatVote** is a premium, AI-powered, and gamified web application designed to transform complex Indian election procedures into an engaging, step-by-step journey. Built for citizens—ranging from first-time 18-year-old voters to seasoned electors—it provides clarity, confidence, and civic pride through immersive simulations and intelligent guidance.
 
@@ -76,5 +86,10 @@ The application is logically structured into 7 master modules, mirroring the Ele
     ```
 
 ---
+
+---
+
+## ⚖️ License
+Distributed under the MIT License. See `LICENSE` for more information.
 
 **BharatVote** — *Empowering the Indian Voter, One Click at a Time.* 🗳️🇮🇳
