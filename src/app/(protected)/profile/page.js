@@ -61,19 +61,18 @@ export default function ProfilePage() {
   };
 
   const handleProfileUpdate = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (!user) {
       alert("User not logged in.");
       return;
     }
     
-    const formData = new FormData(e.target);
     const updates = {
-      fullName: formData.get('fullName'),
-      state: formData.get('state'),
-      constituency: formData.get('constituency'),
-      pincode: formData.get('pincode'),
-      bio: formData.get('bio'),
+      fullName: document.querySelector('input[name="fullName"]')?.value || '',
+      state: document.querySelector('input[name="state"]')?.value || '',
+      constituency: document.querySelector('input[name="constituency"]')?.value || '',
+      pincode: document.querySelector('input[name="pincode"]')?.value || '',
+      bio: document.querySelector('textarea[name="bio"]')?.value || '',
     };
     
     try {
@@ -232,7 +231,7 @@ export default function ProfilePage() {
           {/* Main Content */}
           <div className="lg:col-span-7 space-y-8">
             {isEditing ? (
-               <form onSubmit={handleProfileUpdate} className="card p-8 border-0 shadow-2xl bg-white animate-fade-in-up">
+               <div className="card p-8 border-0 shadow-2xl bg-white animate-fade-in-up">
                   <h2 className="text-xl font-black text-navy mb-8 border-b border-cream pb-4">Profile Identity</h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                      <div>
@@ -258,9 +257,9 @@ export default function ProfilePage() {
                   </div>
                   <div className="flex gap-4 mt-10 pt-8">
                      <button type="button" onClick={() => setIsEditing(false)} className="px-6 py-3 rounded-xl bg-cream text-navy font-black text-xs uppercase tracking-widest hover:bg-navy hover:text-white transition-all">CANCEL</button>
-                     <button type="submit" className="btn-primary flex-1">UPDATE PUBLIC PROFILE</button>
+                     <button type="button" onClick={handleProfileUpdate} className="btn-primary flex-1">UPDATE PUBLIC PROFILE</button>
                   </div>
-               </form>
+               </div>
             ) : (
               <>
                 {/* Journey Progress Card */}
