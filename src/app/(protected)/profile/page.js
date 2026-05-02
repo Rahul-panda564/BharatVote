@@ -60,7 +60,7 @@ export default function ProfilePage() {
     }
   };
 
-  const handleProfileUpdate = async (e) => {
+  const handleProfileUpdate = (e) => {
     if (e) e.preventDefault();
     if (!user) {
       alert("User not logged in.");
@@ -75,15 +75,16 @@ export default function ProfilePage() {
       bio: document.querySelector('textarea[name="bio"]')?.value || '',
     };
     
-    try {
-      await setDoc(doc(db, "users", user.uid), updates, { merge: true });
-      setProfileData(prev => ({ ...(prev || {}), ...updates }));
-      setIsEditing(false);
-      alert("Profile updated successfully!");
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      alert("Failed to update profile: " + error.message);
-    }
+    // Optimistic UI update (Instant)
+    setProfileData(prev => ({ ...(prev || {}), ...updates }));
+    setIsEditing(false);
+    alert("Profile updated successfully!");
+
+    // Background sync to Firestore (Non-blocking)
+    setDoc(doc(db, "users", user.uid), updates, { merge: true })
+      .catch(error => {
+        console.error("Background sync failed:", error);
+      });
   };
 
   const displayName = regData?.fullName || profileData?.fullName || user?.displayName || "Citizen";
@@ -257,7 +258,7 @@ export default function ProfilePage() {
                   </div>
                   <div className="flex gap-4 mt-10 pt-8">
                      <button type="button" onClick={() => setIsEditing(false)} className="px-6 py-3 rounded-xl bg-cream text-navy font-black text-xs uppercase tracking-widest hover:bg-navy hover:text-white transition-all">CANCEL</button>
-                     <button type="button" onClick={handleProfileUpdate} className="btn-primary flex-1">UPDATE PUBLIC PROFILE</button>
+                     <button type="button" onClick={handleProfileUpdate} className="btn-primary flex-1 relative z-50">UPDATE PUBLIC PROFILE</button>
                   </div>
                </div>
             ) : (
