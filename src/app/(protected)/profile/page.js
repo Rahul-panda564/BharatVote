@@ -34,6 +34,7 @@ export default function ProfilePage() {
   const [activeModal, setActiveModal] = useState(null);
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isLocating, setIsLocating] = useState(false);
   const photoInputRef = useRef(null);
 
   useEffect(() => {
@@ -58,6 +59,52 @@ export default function ProfilePage() {
     if (e.target.files && e.target.files[0]) {
       setProfilePhoto(URL.createObjectURL(e.target.files[0]));
     }
+  };
+
+  const handleGetLiveLocation = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      return;
+    }
+
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+          // Reverse geocoding via OpenStreetMap Nominatim
+          const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`);
+          const data = await res.json();
+          
+          if (data && data.address) {
+            const state = data.address.state || "";
+            const constituency = data.address.county || data.address.city || data.address.state_district || "";
+            const pincode = data.address.postcode || "";
+            
+            const stateInput = document.querySelector('input[name="state"]');
+            const constituencyInput = document.querySelector('input[name="constituency"]');
+            const pincodeInput = document.querySelector('input[name="pincode"]');
+            
+            if (stateInput) stateInput.value = state;
+            if (constituencyInput) constituencyInput.value = constituency;
+            if (pincodeInput) pincodeInput.value = pincode;
+            
+            alert("Location detected! Please review and update if necessary.");
+          }
+        } catch (error) {
+          console.error("Error getting location details:", error);
+          alert("Failed to retrieve location details.");
+        } finally {
+          setIsLocating(false);
+        }
+      },
+      (error) => {
+        console.error("Geolocation error:", error);
+        alert("Failed to get location. Please enable location permissions.");
+        setIsLocating(false);
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
   };
 
   const handleProfileUpdate = (e) => {
@@ -233,7 +280,17 @@ export default function ProfilePage() {
           <div className="lg:col-span-7 space-y-8">
             {isEditing ? (
                <div className="card p-8 border-0 shadow-2xl bg-white animate-fade-in-up">
-                  <h2 className="text-xl font-black text-navy mb-8 border-b border-cream pb-4">Profile Identity</h2>
+                  <div className="flex justify-between items-center mb-8 border-b border-cream pb-4">
+                     <h2 className="text-xl font-black text-navy">Profile Identity</h2>
+                     <button 
+                        type="button" 
+                        onClick={handleGetLiveLocation} 
+                        disabled={isLocating} 
+                        className="px-4 py-2 rounded-xl bg-saffron/10 text-saffron font-black text-[10px] uppercase tracking-widest hover:bg-saffron hover:text-white transition-all disabled:opacity-50 flex items-center gap-2"
+                     >
+                        {isLocating ? "⏳ Locating..." : "📍 Use Live Location"}
+                     </button>
+                  </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                      <div>
                         <label className="block text-[10px] font-black text-text-muted uppercase mb-2">Full Name</label>
