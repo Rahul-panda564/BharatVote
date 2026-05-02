@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth";
 import { db } from "@/lib/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const BADGES = [
   { name: "Democracy Defender", icon: "🛡️", stage: 1 },
@@ -57,6 +57,27 @@ export default function ProfilePage() {
   const handlePhotoChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       setProfilePhoto(URL.createObjectURL(e.target.files[0]));
+    }
+  };
+
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    if (!user) return;
+    const formData = new FormData(e.target);
+    const updates = {
+      fullName: formData.get('fullName'),
+      state: formData.get('state'),
+      constituency: formData.get('constituency'),
+      pincode: formData.get('pincode'),
+      bio: formData.get('bio'),
+    };
+    try {
+      await setDoc(doc(db, "users", user.uid), updates, { merge: true });
+      setProfileData(prev => ({ ...prev, ...updates }));
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("Failed to update profile.");
     }
   };
 
@@ -205,34 +226,35 @@ export default function ProfilePage() {
           {/* Main Content */}
           <div className="lg:col-span-7 space-y-8">
             {isEditing ? (
-               <div className="card p-8 border-0 shadow-2xl bg-white animate-fade-in-up">
+               <form onSubmit={handleProfileUpdate} className="card p-8 border-0 shadow-2xl bg-white animate-fade-in-up">
                   <h2 className="text-xl font-black text-navy mb-8 border-b border-cream pb-4">Profile Identity</h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                      <div>
                         <label className="block text-[10px] font-black text-text-muted uppercase mb-2">Full Name</label>
-                        <input className="input-field" defaultValue={displayName} />
+                        <input name="fullName" className="input-field" defaultValue={displayName} />
                      </div>
                      <div>
                         <label className="block text-[10px] font-black text-text-muted uppercase mb-2">State</label>
-                        <input className="input-field" defaultValue={profileData?.state || regData?.state || ""} placeholder="Enter State" />
+                        <input name="state" className="input-field" defaultValue={profileData?.state || regData?.state || ""} placeholder="Enter State" />
                      </div>
                      <div>
                         <label className="block text-[10px] font-black text-text-muted uppercase mb-2">Constituency</label>
-                        <input className="input-field" placeholder="Enter Constituency" defaultValue={profileData?.constituency} />
+                        <input name="constituency" className="input-field" placeholder="Enter Constituency" defaultValue={profileData?.constituency || ""} />
                      </div>
                      <div>
                         <label className="block text-[10px] font-black text-text-muted uppercase mb-2">PIN Code</label>
-                        <input className="input-field" defaultValue={regData?.pincode || ""} placeholder="6-digit PIN" maxLength={6} />
+                        <input name="pincode" className="input-field" defaultValue={profileData?.pincode || regData?.pincode || ""} placeholder="6-digit PIN" maxLength={6} />
                      </div>
                      <div className="sm:col-span-2">
                         <label className="block text-[10px] font-black text-text-muted uppercase mb-2">Civic Bio</label>
-                        <textarea className="input-field h-24" placeholder="Tell the community about your civic interests..." />
+                        <textarea name="bio" className="input-field h-24" placeholder="Tell the community about your civic interests..." defaultValue={profileData?.bio || ""} />
                      </div>
                   </div>
                   <div className="flex gap-4 mt-10 pt-8">
-                     <button onClick={() => { setIsEditing(false); alert("Saved!"); }} className="btn-primary flex-1">UPDATE PUBLIC PROFILE</button>
+                     <button type="button" onClick={() => setIsEditing(false)} className="px-6 py-3 rounded-xl bg-cream text-navy font-black text-xs uppercase tracking-widest hover:bg-navy hover:text-white transition-all">CANCEL</button>
+                     <button type="submit" className="btn-primary flex-1">UPDATE PUBLIC PROFILE</button>
                   </div>
-               </div>
+               </form>
             ) : (
               <>
                 {/* Journey Progress Card */}
