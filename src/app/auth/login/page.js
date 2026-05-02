@@ -8,6 +8,7 @@ import { useAuth } from "@/lib/auth";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { login, googleSignIn } = useAuth();
@@ -62,7 +63,7 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-semibold text-navy mb-1.5" htmlFor="email">Email Address</label>
+            <label className="block text-sm font-semibold text-navy mb-1.5" htmlFor="email">Email Address<span className="text-danger ml-1">*</span></label>
             <input
               id="email"
               type="email"
@@ -75,18 +76,28 @@ export default function LoginPage() {
           </div>
           <div>
             <div className="flex justify-between mb-1.5">
-              <label className="text-sm font-semibold text-navy" htmlFor="password">Password</label>
+              <label className="text-sm font-semibold text-navy" htmlFor="password">Password<span className="text-danger ml-1">*</span></label>
               <Link href="/auth/forgot" className="text-xs font-semibold text-saffron hover:underline">Forgot?</Link>
             </div>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input-field"
-              placeholder="••••••••"
-              required
-            />
+            <div className="relative">
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="input-field pr-10"
+                placeholder="••••••••"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-3 flex items-center text-text-muted hover:text-navy transition-colors"
+                tabIndex="-1"
+              >
+                {showPassword ? "👁️" : "🙈"}
+              </button>
+            </div>
           </div>
 
           <button

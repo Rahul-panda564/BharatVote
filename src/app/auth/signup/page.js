@@ -10,6 +10,8 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { signup, googleSignIn } = useAuth();
@@ -67,7 +69,7 @@ export default function SignupPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold mb-1.5" htmlFor="name">Full Name</label>
+            <label className="block text-sm font-semibold mb-1.5" htmlFor="name">Full Name<span className="text-danger ml-1">*</span></label>
             <input
               id="name"
               type="text"
@@ -79,7 +81,7 @@ export default function SignupPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold mb-1.5" htmlFor="email">Email Address</label>
+            <label className="block text-sm font-semibold mb-1.5" htmlFor="email">Email Address<span className="text-danger ml-1">*</span></label>
             <input
               id="email"
               type="email"
@@ -92,28 +94,48 @@ export default function SignupPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-semibold mb-1.5" htmlFor="password">Password</label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="input-field text-sm"
-                placeholder="••••••••"
-                required
-              />
+              <label className="block text-sm font-semibold mb-1.5" htmlFor="password">Password<span className="text-danger ml-1">*</span></label>
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="input-field text-sm pr-10"
+                  placeholder="••••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-3 flex items-center text-text-muted hover:text-navy transition-colors"
+                  tabIndex="-1"
+                >
+                  {showPassword ? "👁️" : "🙈"}
+                </button>
+              </div>
             </div>
             <div>
-              <label className="block text-sm font-semibold mb-1.5" htmlFor="confirmPassword">Confirm</label>
-              <input
-                id="confirmPassword"
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="input-field text-sm"
-                placeholder="••••••••"
-                required
-              />
+              <label className="block text-sm font-semibold mb-1.5" htmlFor="confirmPassword">Confirm<span className="text-danger ml-1">*</span></label>
+              <div className="relative">
+                <input
+                  id="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="input-field text-sm pr-10"
+                  placeholder="••••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute inset-y-0 right-3 flex items-center text-text-muted hover:text-navy transition-colors"
+                  tabIndex="-1"
+                >
+                  {showConfirmPassword ? "👁️" : "🙈"}
+                </button>
+              </div>
             </div>
           </div>
 
