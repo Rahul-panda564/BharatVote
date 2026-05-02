@@ -62,7 +62,11 @@ export default function ProfilePage() {
 
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
-    if (!user) return;
+    if (!user) {
+      alert("User not logged in.");
+      return;
+    }
+    
     const formData = new FormData(e.target);
     const updates = {
       fullName: formData.get('fullName'),
@@ -71,13 +75,15 @@ export default function ProfilePage() {
       pincode: formData.get('pincode'),
       bio: formData.get('bio'),
     };
+    
     try {
       await setDoc(doc(db, "users", user.uid), updates, { merge: true });
-      setProfileData(prev => ({ ...prev, ...updates }));
+      setProfileData(prev => ({ ...(prev || {}), ...updates }));
       setIsEditing(false);
+      alert("Profile updated successfully!");
     } catch (error) {
       console.error("Error updating profile:", error);
-      alert("Failed to update profile.");
+      alert("Failed to update profile: " + error.message);
     }
   };
 
