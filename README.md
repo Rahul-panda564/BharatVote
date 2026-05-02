@@ -1,7 +1,7 @@
 <div align="center">
   <br />
   <div style="display: flex; align-items: center; justify-content: center; gap: 12px;">
-    <img src="public/images/logo.png" alt="BharatVote Logo" width="60" height="60" />
+    <img src="public/logo.png" alt="BharatVote Logo" width="60" height="60" />
     <h1 style="border-bottom: none; margin: 0; font-size: 48px;">Bharat<span style="color: #FF9933;">Vote</span></h1>
   </div>
   <p><b>Your Vote. Your Power. The National Election Literacy Navigator.</b></p>
