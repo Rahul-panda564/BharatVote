@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 const BRAND_LINKS = [
   { href: "/about", label: "About Us" },
@@ -38,7 +39,7 @@ export default function Footer() {
           <div className="space-y-6">
             <Link href="/" className="flex items-center gap-3 font-black text-xl group" aria-label="BharatVote Home">
               <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center p-1 group-hover:scale-110 transition-transform shadow-lg">
-                <img src="/logo.png" alt="BharatVote Logo" className="w-full h-full object-contain" />
+                <Image src="/logo.png" alt="BharatVote Logo" width={40} height={40} className="w-full h-full object-contain" />
               </div>
               <span>Bharat<span className="text-saffron">Vote</span></span>
             </Link>

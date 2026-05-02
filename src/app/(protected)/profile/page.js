@@ -3,6 +3,18 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth";
+
+const Modal = ({ title, children, onClose }) => (
+  <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-navy/60 backdrop-blur-md animate-fade-in">
+     <div className="bg-white rounded-[2rem] p-8 w-full max-w-md shadow-2xl relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1.5 bg-saffron" />
+        <h3 className="text-xl font-black text-navy mb-6">{title}</h3>
+        {children}
+        <button onClick={onClose} className="mt-8 w-full py-4 bg-cream text-navy rounded-xl font-black text-xs uppercase tracking-widest hover:bg-navy hover:text-white transition-all">Close</button>
+     </div>
+  </div>
+);
+import Image from "next/image";
 import { db } from "@/lib/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
@@ -38,7 +50,8 @@ export default function ProfilePage() {
   const photoInputRef = useRef(null);
 
   useEffect(() => {
-    if (!user) { setLoading(false); return; }
+    if (!user) { setLoading(false); // eslint-disable-line react-hooks/set-state-in-effect
+ return; }
     const timeout = setTimeout(() => setLoading(false), 1000);
     const load = async () => {
       try {
@@ -142,17 +155,6 @@ export default function ProfilePage() {
   const completedStages = journeyComplete ? 7 : Math.max(0, journeyStage - 1);
   const civicScore = completedStages * 120 + 10;
 
-  const Modal = ({ title, children, onClose }) => (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-navy/60 backdrop-blur-md animate-fade-in">
-       <div className="bg-white rounded-[2rem] p-8 w-full max-w-md shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1.5 bg-saffron" />
-          <h3 className="text-xl font-black text-navy mb-6">{title}</h3>
-          {children}
-          <button onClick={onClose} className="mt-8 w-full py-4 bg-cream text-navy rounded-xl font-black text-xs uppercase tracking-widest hover:bg-navy hover:text-white transition-all">Close</button>
-       </div>
-    </div>
-  );
-
   return (
     <div className="bg-cream min-h-screen">
       {/* Modals */}
@@ -190,9 +192,12 @@ export default function ProfilePage() {
         <Modal title="Secure QR Identity" onClose={() => setActiveModal(null)}>
            <div className="flex flex-col items-center py-6">
               <div className="w-56 h-56 bg-white border-2 border-navy/10 rounded-[2.5rem] p-6 shadow-2xl relative group flex items-center justify-center">
-                 <img 
+                 <Image 
                     src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=BharatVote:ID:${user?.uid || 'GUEST'}:${displayName}`} 
                     alt="Official QR Code"
+                    width={200}
+                    height={200}
+                    unoptimized
                     className="w-full h-full object-contain"
                  />
                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -231,7 +236,7 @@ export default function ProfilePage() {
             <div className="relative group">
               <div className="w-32 h-32 rounded-[2rem] bg-gradient-to-br from-saffron to-orange-600 p-1 shadow-2xl relative">
                  <div className="w-full h-full rounded-[1.8rem] bg-navy overflow-hidden flex items-center justify-center text-4xl font-black text-white group-hover:scale-95 transition-transform duration-500">
-                    {profilePhoto ? <img src={profilePhoto} className="w-full h-full object-cover" /> : initials}
+                    {profilePhoto ? <Image src={profilePhoto} alt="Profile" width={128} height={128} unoptimized className="w-full h-full object-cover" /> : initials}
                  </div>
                  <button 
                   onClick={() => photoInputRef.current.click()}
@@ -465,7 +470,7 @@ export default function ProfilePage() {
                <div className="relative z-10">
                   <div className="flex justify-between items-start mb-8">
                      <div className="w-16 h-20 bg-navy/5 rounded-xl border border-navy/10 overflow-hidden flex items-center justify-center text-4xl">
-                        {profilePhoto ? <img src={profilePhoto} className="w-full h-full object-cover" /> : "👤"}
+                        {profilePhoto ? <Image src={profilePhoto} alt="Elector" width={64} height={80} unoptimized className="w-full h-full object-cover" /> : "👤"}
                      </div>
                      <div className="text-right">
                         <p className="text-[10px] font-black text-navy leading-none">DIGITAL EPIC</p>

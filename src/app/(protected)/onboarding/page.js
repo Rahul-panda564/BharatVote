@@ -22,7 +22,7 @@ export default function OnboardingPage() {
   useEffect(() => {
     if (user) {
       if (user.displayName) {
-        setFormData((prev) => ({ ...prev, fullName: user.displayName }));
+        setFormData((prev) => ({ ...prev, fullName: user.displayName })); // eslint-disable-line react-hooks/set-state-in-effect
       }
       
       const checkProfile = async () => {

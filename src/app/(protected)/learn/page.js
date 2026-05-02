@@ -65,7 +65,7 @@ export default function LearnPage() {
                 <span className="text-saffron">Smart Voter</span>
               </h1>
               <p className="text-blue-100 text-lg opacity-80 font-medium pb-10 max-w-xl">
-                Unlock achievements and master the world's largest democracy.
+                Unlock achievements and master the world&apos;s largest democracy.
               </p>
             </div>
             

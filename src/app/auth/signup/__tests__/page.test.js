@@ -166,4 +166,30 @@ describe('Signup Page', () => {
     const logoLink = screen.getByText('Bharat').closest('a');
     expect(logoLink).toHaveAttribute('href', '/');
   });
+
+  test('calls googleSignIn on button click', async () => {
+    mockGoogleSignIn.mockResolvedValueOnce({});
+    render(<SignupPage />);
+    const googleBtn = screen.getByText('Google Account');
+    fireEvent.click(googleBtn);
+    await waitFor(() => {
+      expect(mockGoogleSignIn).toHaveBeenCalled();
+      expect(mockPush).toHaveBeenCalledWith('/profile');
+    });
+  });
+
+  test('toggles password visibility', () => {
+    render(<SignupPage />);
+    const passwordInput = screen.getByLabelText(/^Password/i);
+    // Find the toggle buttons by their content
+    const passToggle = screen.getAllByText('🙈')[0];
+    
+    expect(passwordInput.type).toBe('password');
+    fireEvent.click(passToggle);
+    expect(passwordInput.type).toBe('text');
+    
+    const eyeIcon = screen.getAllByText('👁️')[0];
+    fireEvent.click(eyeIcon);
+    expect(passwordInput.type).toBe('password');
+  });
 });

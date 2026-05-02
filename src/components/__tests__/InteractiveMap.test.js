@@ -66,4 +66,37 @@ describe('InteractiveMap Component', () => {
     expect(screen.getByText('MH')).toBeInTheDocument();
     expect(screen.getByText('GJ')).toBeInTheDocument();
   });
+
+  test('SVG paths trigger hover state', () => {
+    render(<InteractiveMap />);
+    const upPath = screen.getByTestId('state-path-up');
+    
+    fireEvent.mouseEnter(upPath);
+    expect(screen.getAllByText('Uttar Pradesh').length).toBeGreaterThanOrEqual(2);
+    expect(screen.getByText('80')).toBeInTheDocument();
+    
+    fireEvent.mouseLeave(upPath);
+    expect(screen.getAllByText('Uttar Pradesh').length).toBe(1);
+  });
+
+  test('SVG paths trigger selection on click', () => {
+    render(<InteractiveMap />);
+    const mhPath = screen.getByTestId('state-path-mh');
+    
+    fireEvent.click(mhPath);
+    expect(screen.getAllByText(/Maharashtra/).length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByText('INDIA').length).toBeGreaterThanOrEqual(2);
+  });
+
+  test('all paths trigger click and hover', () => {
+    render(<InteractiveMap />);
+    const ids = ['up', 'mh', 'wb', 'tn'];
+    ids.forEach(id => {
+      const path = screen.getByTestId(`state-path-${id}`);
+      fireEvent.mouseEnter(path);
+      fireEvent.click(path);
+      fireEvent.mouseLeave(path);
+    });
+    expect(screen.getAllByText(/Tamil Nadu/).length).toBeGreaterThanOrEqual(1);
+  });
 });

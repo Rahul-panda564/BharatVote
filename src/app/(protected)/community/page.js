@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const FORUM_CATEGORIES_DATA = [
   { id: "trending", name: "Trending", icon: "🔥" },
@@ -107,7 +108,7 @@ export default function CommunityPage() {
             Where India <span className="text-saffron">Discusses</span> Democracy
           </h1>
           <p className="text-blue-100 max-w-2xl mx-auto text-lg font-medium opacity-80 pb-10">
-            Your voice matters in the world's largest democracy.
+            Your voice matters in the world&apos;s largest democracy.
           </p>
         </div>
       </section>
@@ -158,7 +159,7 @@ export default function CommunityPage() {
                
                {selectedImage && (
                  <div className="mt-4 relative inline-block group">
-                    <img src={selectedImage} alt="Preview" className="max-h-48 rounded-xl shadow-lg border-4 border-white" />
+                     <Image src={selectedImage} alt="Preview" width={200} height={200} unoptimized className="max-h-48 w-auto rounded-xl shadow-lg border-4 border-white" />
                     <button onClick={() => setSelectedImage(null)} className="absolute -top-3 -right-3 w-8 h-8 bg-danger text-white rounded-full font-black shadow-xl scale-0 group-hover:scale-100 transition-transform">✕</button>
                  </div>
                )}
@@ -219,11 +220,11 @@ export default function CommunityPage() {
                         <h3 className="text-xl font-black text-navy mb-4 group-hover:text-saffron transition-colors leading-tight">{post.title}</h3>
                         <p className="text-sm text-text-secondary leading-relaxed mb-6 opacity-80">{post.body}</p>
                         
-                        {post.image && (
-                          <div className="mb-6 rounded-2xl overflow-hidden border border-cream shadow-sm">
-                            <img src={post.image} alt="User Post Media" className="w-full h-auto object-cover max-h-[400px]" />
-                          </div>
-                        )}
+                          {post.image && (
+                            <div className="mb-6 rounded-2xl overflow-hidden border border-cream shadow-sm">
+                              <Image src={post.image} alt="User Post Media" width={600} height={400} unoptimized className="w-full h-auto object-cover max-h-[400px]" />
+                            </div>
+                          )}
 
                         <div className="flex items-center gap-6 pt-4 border-t border-cream">
                            <button className="text-[10px] font-bold text-text-muted hover:text-navy transition-colors">💬 {post.comments} COMMENTS</button>

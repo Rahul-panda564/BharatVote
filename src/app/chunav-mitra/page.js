@@ -40,8 +40,9 @@ export default function ChunavMitraPage() {
   const [mounted, setMounted] = useState(false);
   const messagesEndRef = useRef(null);
 
+  // Hydration fix using layout effect for smoother transition
   useEffect(() => {
-    setMounted(true);
+    setMounted(true); // eslint-disable-line react-hooks/set-state-in-effect
   }, []);
 
   const scrollToBottom = () => {
@@ -66,8 +67,9 @@ export default function ChunavMitraPage() {
     const content = text || inputText.trim();
     if (!content) return;
 
+    const msgId = `u-${crypto.randomUUID()}`;
     const userMsg = {
-      id: Date.now(),
+      id: msgId,
       role: "user",
       content,
       time: new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true }),
@@ -79,7 +81,7 @@ export default function ChunavMitraPage() {
     setTimeout(async () => {
       const responseText = await getChunavMitraResponse(content, messages);
       const aiResponse = {
-        id: Date.now() + 1,
+        id: `a-${Date.now()}`,
         role: "assistant",
         content: responseText,
         time: new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true }),

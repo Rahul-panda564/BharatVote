@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import Footer from "@/components/Footer";
 
 const JOURNEY_STAGES = [
@@ -178,9 +179,11 @@ export default function HomePage() {
               <div className="relative">
                 <div className="absolute -inset-10 bg-saffron/20 blur-[80px] rounded-full animate-pulse" />
                 <div className="card bg-white/10 backdrop-blur-2xl border-white/20 p-6 rounded-[3rem] shadow-2xl relative z-10 overflow-hidden group">
-                  <img 
+                  <Image 
                     src="/ai-bot.png" 
                     alt="Chunav Mitra AI Avatar" 
+                    width={500}
+                    height={500}
                     className="w-full h-auto rounded-[2rem] transition-transform duration-700 group-hover:scale-105" 
                   />
                   <div className="absolute top-6 right-6 bg-green-india text-white px-4 py-2 rounded-full text-xs font-bold flex items-center gap-3 shadow-xl">

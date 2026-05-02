@@ -34,20 +34,18 @@ const UPDATES = [
 
 export default function LiveResultsPage() {
   const [lastUpdated, setLastUpdated] = useState("");
-  const [coalitionSeats, setCoalitionSeats] = useState(0);
   const [selectedParties, setSelectedParties] = useState([]);
+  const coalitionSeats = selectedParties.reduce((sum, p) => sum + p.seats, 0); // Derived state
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    setLastUpdated(new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", day: "2-digit", month: "short" }));
+    setLastUpdated(new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", day: "2-digit", month: "short" })); // eslint-disable-line react-hooks/set-state-in-effect
   }, []);
 
   const toggleParty = (party) => {
     setSelectedParties(prev => {
       const exists = prev.find(p => p.name === party.name);
-      const next = exists ? prev.filter(p => p.name !== party.name) : [...prev, party];
-      setCoalitionSeats(next.reduce((sum, p) => sum + p.seats, 0));
-      return next;
+      return exists ? prev.filter(p => p.name !== party.name) : [...prev, party];
     });
   };
 

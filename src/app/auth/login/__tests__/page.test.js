@@ -159,4 +159,41 @@ describe('Login Page', () => {
     const logoLink = screen.getByText('Bharat').closest('a');
     expect(logoLink).toHaveAttribute('href', '/');
   });
+
+  test('calls googleSignIn on button click', async () => {
+    mockGoogleSignIn.mockResolvedValueOnce({});
+    render(<LoginPage />);
+    const googleBtn = screen.getByText('Google Account');
+    fireEvent.click(googleBtn);
+    await waitFor(() => {
+      expect(mockGoogleSignIn).toHaveBeenCalled();
+      expect(mockPush).toHaveBeenCalledWith('/profile');
+    });
+  });
+
+  test('shows error on failed googleSignIn', async () => {
+    mockGoogleSignIn.mockRejectedValueOnce(new Error('Google failed'));
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    render(<LoginPage />);
+    const googleBtn = screen.getByText('Google Account');
+    fireEvent.click(googleBtn);
+    await waitFor(() => {
+      expect(screen.getByText('Google sign-in failed.')).toBeInTheDocument();
+    });
+    consoleSpy.mockRestore();
+  });
+
+  test('toggles password visibility', () => {
+    render(<LoginPage />);
+    const passwordInput = screen.getByLabelText(/^Password/i);
+    const toggleBtn = screen.getByText('🙈');
+    
+    expect(passwordInput.type).toBe('password');
+    fireEvent.click(toggleBtn);
+    expect(passwordInput.type).toBe('text');
+    expect(screen.getByText('👁️')).toBeInTheDocument();
+    
+    fireEvent.click(screen.getByText('👁️'));
+    expect(passwordInput.type).toBe('password');
+  });
 });

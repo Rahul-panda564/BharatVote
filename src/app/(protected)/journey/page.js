@@ -25,6 +25,7 @@ export default function JourneyPage() {
   const [error, setError] = useState("");
   const [journeyComplete, setJourneyComplete] = useState(false);
   const fileInputRef = useRef(null);
+  const [boothNumber] = useState(() => Math.floor(Math.random() * 200 + 100));
 
   const [form, setForm] = useState({
     fullName: "", dob: "", address: "", state: "", pincode: "",
@@ -35,7 +36,10 @@ export default function JourneyPage() {
   const [uploadedFile, setUploadedFile] = useState(null);
 
   useEffect(() => {
-    if (!user) { setDataLoading(false); return; }
+    if (!user) {
+      setDataLoading(false); // eslint-disable-line react-hooks/set-state-in-effect
+      return;
+    }
     const timeout = setTimeout(() => setDataLoading(false), 2000);
     const load = async () => {
       try {
@@ -217,7 +221,7 @@ export default function JourneyPage() {
               <h4 className="font-bold text-navy mb-3">📌 Nearest Polling Station</h4>
               <div className="space-y-2 text-xs">
                 <p><span className="font-bold text-navy">Station:</span> Government High School, {form.boothLocation}</p>
-                <p><span className="font-bold text-navy">Booth No:</span> #{Math.floor(Math.random() * 200 + 100)}</p>
+                 <p><span className="font-bold text-navy">Booth No:</span> #{boothNumber}</p>
                 <p><span className="font-bold text-navy">Distance:</span> ~1.2 km from your registered address</p>
                 <p><span className="font-bold text-navy">Facilities:</span> Ramp Access, Drinking Water, Shade</p>
               </div>

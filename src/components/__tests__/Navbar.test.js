@@ -164,4 +164,57 @@ describe('Navbar Component', () => {
     fireEvent.click(menuButton);
     expect(screen.getByLabelText('Close menu')).toHaveAttribute('aria-expanded', 'true');
   });
+
+  test('calls logout and redirects when logout is clicked', () => {
+    useAuth.mockReturnValue({
+      user: { displayName: 'Test', uid: '123' },
+      logout: mockLogout,
+    });
+    render(<Navbar />);
+    const logoutBtn = screen.getByText('Logout');
+    fireEvent.click(logoutBtn);
+    expect(mockLogout).toHaveBeenCalled();
+  });
+
+  test('marks notifications as read on click', () => {
+    useAuth.mockReturnValue({
+      user: { displayName: 'Test', uid: '123' },
+      logout: mockLogout,
+    });
+    render(<Navbar />);
+    const notifLink = screen.getByLabelText('Notifications');
+    fireEvent.click(notifLink);
+    expect(window.localStorage.setItem).toHaveBeenCalledWith('bv_notif_read', 'true');
+  });
+
+  test('shows notification badge when unread', () => {
+    useAuth.mockReturnValue({
+      user: { displayName: 'Test', uid: '123' },
+      logout: mockLogout,
+    });
+    window.localStorage.getItem.mockReturnValue(null);
+    render(<Navbar />);
+    expect(screen.getByLabelText('2 unread notifications')).toBeInTheDocument();
+  });
+
+  test('calls logout in mobile menu', () => {
+    useAuth.mockReturnValue({
+      user: { displayName: 'Test', uid: '123' },
+      logout: mockLogout,
+    });
+    render(<Navbar />);
+    // Open mobile menu
+    fireEvent.click(screen.getByLabelText('Open menu'));
+    const logoutBtns = screen.getAllByText('Logout', { selector: 'button' });
+    fireEvent.click(logoutBtns[logoutBtns.length - 1]); // Click the last one (usually mobile)
+    expect(mockLogout).toHaveBeenCalled();
+  });
+
+  test('closes mobile menu on escape key', () => {
+    render(<Navbar />);
+    fireEvent.click(screen.getByLabelText('Open menu'));
+    expect(screen.getByLabelText('Close menu')).toBeInTheDocument();
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(screen.queryByLabelText('Close menu')).not.toBeInTheDocument();
+  });
 });

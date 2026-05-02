@@ -54,6 +54,7 @@ export default function InteractiveMap() {
             <path 
               d="M150,150 L200,140 L230,160 L220,200 L170,210 Z" 
               className={`transition-all duration-300 cursor-pointer ${hoveredState?.id === "UP" ? "fill-saffron stroke-white stroke-2 scale-105" : "fill-saffron/40 stroke-saffron/60"}`}
+              data-testid="state-path-up"
               onMouseEnter={() => setHoveredState(STATES[0])}
               onMouseLeave={() => setHoveredState(null)}
               onClick={() => setSelectedState(STATES[0])}
@@ -62,6 +63,7 @@ export default function InteractiveMap() {
             <path 
               d="M100,280 L150,270 L170,320 L130,350 L90,330 Z" 
               className={`transition-all duration-300 cursor-pointer ${hoveredState?.id === "MH" ? "fill-blue-500 stroke-white stroke-2 scale-105" : "fill-blue-500/40 stroke-blue-500/60"}`}
+              data-testid="state-path-mh"
               onMouseEnter={() => setHoveredState(STATES[1])}
               onMouseLeave={() => setHoveredState(null)}
               onClick={() => setSelectedState(STATES[1])}
@@ -70,6 +72,7 @@ export default function InteractiveMap() {
             <path 
               d="M260,200 L280,210 L275,250 L250,260 L245,220 Z" 
               className={`transition-all duration-300 cursor-pointer ${hoveredState?.id === "WB" ? "fill-green-500 stroke-white stroke-2 scale-105" : "fill-green-500/40 stroke-green-500/60"}`}
+              data-testid="state-path-wb"
               onMouseEnter={() => setHoveredState(STATES[2])}
               onMouseLeave={() => setHoveredState(null)}
               onClick={() => setSelectedState(STATES[2])}
@@ -78,6 +81,7 @@ export default function InteractiveMap() {
              <path 
               d="M140,400 L170,410 L160,450 L130,440 Z" 
               className={`transition-all duration-300 cursor-pointer ${hoveredState?.id === "TN" ? "fill-blue-400 stroke-white stroke-2 scale-105" : "fill-blue-400/40 stroke-blue-400/60"}`}
+              data-testid="state-path-tn"
               onMouseEnter={() => setHoveredState(STATES[4])}
               onMouseLeave={() => setHoveredState(null)}
               onClick={() => setSelectedState(STATES[4])}

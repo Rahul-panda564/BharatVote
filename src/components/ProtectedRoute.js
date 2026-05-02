@@ -13,8 +13,9 @@ export default function ProtectedRoute({ children }) {
   const [mounted, setMounted] = useState(false);
   const [isProfileReady, setIsProfileReady] = useState(false);
 
+  // Hydration handling
   useEffect(() => {
-    setMounted(true);
+    setMounted(true); // eslint-disable-line react-hooks/set-state-in-effect
   }, []);
 
   useEffect(() => {

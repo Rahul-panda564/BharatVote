@@ -28,7 +28,7 @@ export default function PrivacyPage() {
             </p>
             <ul className="list-disc ml-6 text-sm text-text-secondary space-y-2">
               <li><strong>Account Information:</strong> Name, email address, and profile photo via Google Auth.</li>
-              <li><strong>Simulation Data:</strong> Address, DOB, and ID type provided during the "Journey" modules.</li>
+              <li><strong>Simulation Data:</strong> Address, DOB, and ID type provided during the &quot;Journey&quot; modules.</li>
               <li><strong>AI Interactions:</strong> Questions asked to Chunav Mitra to improve response quality.</li>
             </ul>
           </section>

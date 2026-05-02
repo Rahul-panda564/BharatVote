@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import GoogleTranslate from "./GoogleTranslate";
 import { useAuth } from "@/lib/auth";
 
@@ -27,10 +28,12 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close mobile menu on route change
-  useEffect(() => {
+  // Close mobile menu on route change using derived state (React 19 pattern)
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
     setMobileOpen(false);
-  }, [pathname]);
+  }
 
   // Trap focus inside mobile menu
   useEffect(() => {
@@ -67,7 +70,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
           <div className="w-10 h-10 bg-white rounded-xl shadow-lg flex items-center justify-center p-1 group-hover:scale-110 transition-transform">
-            <img src="/logo.png" alt="BharatVote Logo" className="w-full h-full object-contain" />
+            <Image src="/logo.png" alt="BharatVote Logo" width={40} height={40} className="w-full h-full object-contain" />
           </div>
           <span className="font-black text-xl tracking-tighter text-navy group-hover:text-saffron transition-colors">
             Bharat<span className="text-saffron">Vote</span>
